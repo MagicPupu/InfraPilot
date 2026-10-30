@@ -1,0 +1,18 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --frozen
+      - run: uv run ruff check src tests evals
+      - run: uv run ruff format --check src tests evals
+      - run: uv run mypy
+      # FakeLLM only: CI never pulls or runs Ollama, and evals are local-only.
+      - run: uv run pytest -m "not ollama"

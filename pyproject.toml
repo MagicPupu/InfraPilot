@@ -57,3 +57,13 @@ markers = ["ollama: needs a reachable local Ollama (never run in CI)"]
 [tool.ruff]
 line-length = 100
 src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+# typer idiom: Argument()/Option() as defaults
+ignore = ["B008"]
+per-file-ignores = { "tests/*" = ["E501"], "src/infrapilot/graph/*" = ["E501"] }
+
+[[tool.mypy.overrides]]
+module = ["tests.*"]
+disallow_untyped_defs = false
