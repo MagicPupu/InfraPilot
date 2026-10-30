@@ -1,5 +1,6 @@
 from collections.abc import Callable
 from dataclasses import dataclass
+from typing import Any
 
 from langchain_core.language_models import BaseChatModel
 from langgraph.checkpoint.base import BaseCheckpointSaver
@@ -50,19 +51,21 @@ def _after_grade(state: InfraState) -> str:
 
 def build_graph(deps: Deps, checkpointer: BaseCheckpointSaver | None) -> CompiledStateGraph:
     g = StateGraph(InfraState)
-    g.add_node("router", make_router(deps.llm))
-    g.add_node("retrieve", make_retrieve(deps.retriever))
-    g.add_node("grade_docs", make_grade(deps.llm))
-    g.add_node("rewrite_query", make_rewrite(deps.llm))
-    g.add_node("answer_with_citations", make_answer(deps.llm))
-    g.add_node("planner", make_planner(deps.llm))
-    g.add_node("policy_guard", policy_guard)
-    g.add_node("approval", approval)
-    g.add_node("executor", make_executor(deps.invoker))
-    g.add_node("verify", make_verify(deps.invoker))
-    g.add_node("explain_failure", explain_failure)
-    g.add_node("explain_refusal", explain_refusal)
-    g.add_node("rejected", rejected)
+    # LangGraph's add_node overloads do not accept a total=False TypedDict state.
+    add_node: Any = g.add_node
+    add_node("router", make_router(deps.llm))
+    add_node("retrieve", make_retrieve(deps.retriever))
+    add_node("grade_docs", make_grade(deps.llm))
+    add_node("rewrite_query", make_rewrite(deps.llm))
+    add_node("answer_with_citations", make_answer(deps.llm))
+    add_node("planner", make_planner(deps.llm))
+    add_node("policy_guard", policy_guard)
+    add_node("approval", approval)
+    add_node("executor", make_executor(deps.invoker))
+    add_node("verify", make_verify(deps.invoker))
+    add_node("explain_failure", explain_failure)
+    add_node("explain_refusal", explain_refusal)
+    add_node("rejected", rejected)
 
     g.add_edge(START, "router")
     g.add_conditional_edges(

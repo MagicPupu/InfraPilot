@@ -24,14 +24,14 @@ def run(
     llm: Any, request: str, chunks: list[Chunk] | None = None, invoker: FakeInvoker | None = None
 ):
     invoker = invoker or FakeInvoker()
-    graph = build_graph(Deps(llm, FakeRetriever(chunks or [CHUNK]), invoker), InMemorySaver())
+    graph: Any = build_graph(Deps(llm, FakeRetriever(chunks or [CHUNK]), invoker), InMemorySaver())
     cfg = {"configurable": {"thread_id": "t"}}
     result = asyncio.run(graph.ainvoke({"request": request}, cfg))
     return graph, cfg, result, invoker
 
 
 def resume(graph: Any, cfg: Any, approved: bool) -> dict[str, Any]:
-    return asyncio.run(graph.ainvoke(Command(resume={"approved": approved}), cfg))  # type: ignore[no-any-return]
+    return asyncio.run(graph.ainvoke(Command(resume={"approved": approved}), cfg))
 
 
 # --- question path ---------------------------------------------------------

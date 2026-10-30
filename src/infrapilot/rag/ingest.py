@@ -66,7 +66,7 @@ def ingest_directory(directory: Path, dsn: str, embeddings: Embeddings) -> int:
     vectors = embeddings.embed_documents([f"{c.heading_path}\n{c.text}" for c in chunks])
     schema = resources.files("infrapilot.rag").joinpath("schema.sql").read_text()
     with psycopg.connect(dsn, autocommit=True) as conn:
-        conn.execute(schema)  # type: ignore[arg-type]
+        conn.execute(schema)
         register_vector(conn)
         for chunk, vec in zip(chunks, vectors, strict=True):
             conn.execute(

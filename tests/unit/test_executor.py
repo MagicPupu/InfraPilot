@@ -39,7 +39,7 @@ def test_tampered_plan_after_policy_is_blocked():
 def test_valid_approval_executes_and_invalid_never_calls_tools():
     invoker = FakeInvoker()
     execute = make_executor(invoker)
-    blocked = asyncio.run(execute(state_for(DELETE, None)))  # type: ignore[arg-type]
+    blocked = asyncio.run(execute(state_for(DELETE, None)))
     assert "error" in blocked and not invoker.calls
-    ok = asyncio.run(execute(state_for(DELETE, True)))  # type: ignore[arg-type]
+    ok = asyncio.run(execute(state_for(DELETE, True)))
     assert ok["results"][0]["ok"] and invoker.calls
