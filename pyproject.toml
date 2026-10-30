@@ -1,0 +1,59 @@
+[project]
+name = "infrapilot"
+version = "0.1.0"
+description = "Local-first LangGraph agent for policy-gated infrastructure requests"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.12"
+dependencies = [
+    "docker>=7.2.0",
+    "langchain-core>=1.7.3",
+    "langchain-mcp-adapters>=0.3.2",
+    "langchain-ollama>=1.1.0",
+    "langfuse>=5.1.0",
+    "langgraph>=1.2.18",
+    "langgraph-checkpoint-postgres>=3.2.0",
+    "mcp>=1.30.0",
+    "pgvector>=0.5.1",
+    "psycopg[binary,pool]>=3.3.6",
+    "pydantic>=2.14.2",
+    "pydantic-settings>=2.16.2",
+    "rich>=15.0.0",
+    "typer>=0.27.3",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=2.4.1",
+    "pytest>=9.2.0",
+    "ruff>=0.17.3",
+    "types-docker>=7.2.0.20261006",
+]
+
+[project.scripts]
+infrapilot = "infrapilot.cli:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/infrapilot"]
+force-include = { "src/infrapilot/rag/schema.sql" = "infrapilot/rag/schema.sql" }
+
+[tool.mypy]
+python_version = "3.12"
+files = ["src", "tests", "evals"]
+disallow_untyped_defs = true
+warn_unused_ignores = true
+no_implicit_optional = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+markers = ["ollama: needs a reachable local Ollama (never run in CI)"]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
