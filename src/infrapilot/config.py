@@ -12,6 +12,14 @@ class Settings(BaseSettings):
     llm_model: str = "qwen3:8b"
     embed_model: str = "nomic-embed-text"
     num_ctx: int = 8192
+    database_url: str = "postgresql://infrapilot:infrapilot@localhost:5432/infrapilot"
+
+    # Self-hosted Langfuse tracing; off unless explicitly enabled.
+    langfuse_enabled: bool = False
+    langfuse_public_key: str = ""
+    langfuse_secret_key: str = ""
+    langfuse_host: str = "http://localhost:3000"
+
     # Optional LLM-judge for eval answer quality; unset means the judge is disabled.
     judge_model: str | None = None
 
