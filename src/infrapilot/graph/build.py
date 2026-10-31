@@ -12,6 +12,7 @@ from infrapilot.graph.executor import make_executor
 from infrapilot.graph.failure import explain_failure, explain_refusal, rejected
 from infrapilot.graph.planner import make_planner
 from infrapilot.graph.policy import policy_guard
+from infrapilot.graph.preflight import make_preflight
 from infrapilot.graph.rag_nodes import (
     make_answer,
     make_grade,
@@ -60,6 +61,7 @@ def build_graph(deps: Deps, checkpointer: BaseCheckpointSaver | None) -> Compile
     add_node("answer_with_citations", make_answer(deps.llm))
     add_node("planner", make_planner(deps.llm))
     add_node("policy_guard", policy_guard)
+    add_node("preflight", make_preflight(deps.invoker))
     add_node("approval", approval)
     add_node("executor", make_executor(deps.invoker))
     add_node("verify", make_verify(deps.invoker))
@@ -80,9 +82,13 @@ def build_graph(deps: Deps, checkpointer: BaseCheckpointSaver | None) -> Compile
         "policy_guard",
         lambda s: {
             "refuse": "explain_refusal",
-            "approve": "executor",
-            "needs_approval": "approval",
+            "approve": "preflight",
+            "needs_approval": "preflight",
         }[s["policy"]["outcome"]],
+    )
+    g.add_conditional_edges(
+        "preflight",
+        _or_fail(lambda s: "executor" if s["policy"]["outcome"] == "approve" else "approval"),
     )
     g.add_conditional_edges(
         "approval", lambda s: "executor" if s["approval"]["approved"] else "rejected"

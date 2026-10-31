@@ -33,8 +33,13 @@ def make_verify(invoker: ToolInvoker) -> Callable[[InfraState], Awaitable[dict[s
                     if problem := _check(r, listing["containers"]):
                         problems.append(problem)
         ok = not problems
+        lines = "\n".join(
+            f"- {r['tool']}({', '.join(f'{k}={v!r}' for k, v in r['args'].items())}): "
+            + ("ok" if r.get("ok") else f"FAILED ({r.get('error')})")
+            for r in results
+        )
         summary = (
-            f"Executed {len(results)} call(s) and verified the resulting state."
+            f"Executed {len(results)} call(s) and verified the resulting state.\n{lines}"
             if ok
             else "Execution finished with problems: " + "; ".join(problems)
         )
