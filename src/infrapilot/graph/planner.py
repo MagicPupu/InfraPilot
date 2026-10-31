@@ -14,7 +14,9 @@ SYSTEM = f"""You plan infrastructure changes as an ordered list of tool calls.
 Available tools:
 {_TOOL_LIST}
 Rules: container names start with "ip-"; mem_mb is an integer in MB; cpus is a number.
-Only plan what the user asked for. If the request cannot be done with these tools,
+Only plan what the user asked for. Never invent container names: if the user gives no
+"ip-" name, use the name they gave verbatim (the policy check will refuse it).
+Restarting is done with restart_container, never with delete + create. If the request cannot be done with these tools,
 still return your best plan using the closest tool name; a separate policy check decides.
 Reply with JSON: {{"rationale": str, "calls": [{{"tool": str, "args": object}}]}}.
 
@@ -25,6 +27,9 @@ Examples:
 "Scale ip-web to 3 replicas" ->
 {{"rationale": "Scale the service.", "calls": [{{"tool": "scale_service",
 "args": {{"name": "ip-web", "replicas": 3}}}}]}}
+"Restart ip-web" ->
+{{"rationale": "Restart the container.", "calls": [{{"tool": "restart_container",
+"args": {{"name": "ip-web"}}}}]}}
 "Show me what is running" ->
 {{"rationale": "List managed containers.", "calls": [{{"tool": "list_containers", "args": {{}}}}]}}"""
 

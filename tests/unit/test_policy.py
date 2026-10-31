@@ -86,3 +86,13 @@ def test_hash_is_stable_and_sensitive():
     assert plan_hash(a.calls) == plan_hash(b.calls) == evaluate_plan(a).plan_hash
     changed = plan(("create_container", {**GOOD_CREATE[1], "mem_mb": 512}))
     assert plan_hash(changed.calls) != plan_hash(a.calls)
+
+
+def test_restart_needs_approval_but_is_not_destructive():
+    decision = evaluate_plan(plan(("restart_container", {"name": "ip-web"})))
+    assert decision.outcome == "needs_approval"
+    assert not decision.destructive
+
+
+def test_restart_of_foreign_container_is_refused():
+    assert evaluate_plan(plan(("restart_container", {"name": "postgres-prod"}))).outcome == "refuse"

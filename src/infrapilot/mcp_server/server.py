@@ -32,6 +32,12 @@ def scale_service(name: str, replicas: int) -> str:
 
 
 @mcp.tool()
+def restart_container(name: str) -> str:
+    """Restart a managed container. Refuses containers without the managed label."""
+    return json.dumps(_tools.restart_container(name))
+
+
+@mcp.tool()
 def delete_container(name: str) -> str:
     """Delete a managed container. Refuses containers without the managed label."""
     return json.dumps(_tools.delete_container(name))

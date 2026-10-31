@@ -104,6 +104,22 @@ class DockerTools:
         except DockerException as exc:
             return _err(str(exc))
 
+    def restart_container(self, name: str) -> Result:
+        try:
+            c = self.client.containers.get(name)
+        except NotFound:
+            return _err(f"no container named '{name}'")
+        except DockerException as exc:
+            return _err(f"docker unavailable: {exc}")
+        if c.labels.get(MANAGED_LABEL) != "true":
+            return _err(f"container '{name}' is not managed by InfraPilot; refusing")
+        try:
+            c.restart(timeout=10)
+            c.reload()
+            return {"ok": True, "restarted": name, "status": c.status}
+        except DockerException as exc:
+            return _err(str(exc))
+
     def delete_container(self, name: str) -> Result:
         try:
             c = self.client.containers.get(name)

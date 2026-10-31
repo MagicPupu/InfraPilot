@@ -34,6 +34,10 @@ class ScaleServiceArgs(_Args):
     replicas: int = Field(ge=0, le=MAX_REPLICAS)
 
 
+class RestartContainerArgs(_Args):
+    name: str = Field(pattern=NAME_PATTERN)
+
+
 class DeleteContainerArgs(_Args):
     name: str = Field(pattern=NAME_PATTERN)
 
@@ -72,6 +76,15 @@ TOOLS: dict[str, tuple[ToolSpec, type[_Args]]] = {
             signature="scale_service(name, replicas)",
         ),
         ScaleServiceArgs,
+    ),
+    "restart_container": (
+        ToolSpec(
+            name="restart_container",
+            mutating=True,
+            destructive=False,
+            signature="restart_container(name)",
+        ),
+        RestartContainerArgs,
     ),
     "delete_container": (
         ToolSpec(
