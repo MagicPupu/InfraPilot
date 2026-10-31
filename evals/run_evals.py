@@ -19,6 +19,7 @@ import platform
 import shutil
 import statistics
 import subprocess
+import sys
 import time
 from pathlib import Path
 from typing import Any
@@ -95,6 +96,10 @@ def hardware_line() -> str:
     return f"Hardware: CPU {cpu} | GPU {gpu} | RAM visible {mem_kb / 1024 / 1024:.1f} GB"
 
 
+def miss(case: dict[str, Any], what: str, detail: str) -> None:
+    print(f"[miss] {case['id']}: {what} ({detail})", file=sys.stderr)
+
+
 def pct(hits: int, total: int) -> str:
     return f"{100 * hits / total:.0f}%" if total else "n/a"
 
@@ -114,10 +119,12 @@ async def evaluate_model(model: str, cases: list[dict[str, Any]], judge: bool) -
         candidate = PgVectorRetriever(s.database_url, get_embeddings(s))
         candidate.retrieve("ping", 1)
         retriever: PgVectorRetriever | None = candidate
-    except Exception:
+    except Exception as exc:
+        print(f"[warn] RAG cases skipped, retriever unavailable: {exc}", file=sys.stderr)
         retriever = None
     graph = build_graph(Deps(llm, retriever, NullInvoker()), None) if retriever else None  # type: ignore[arg-type]
 
+    llm.invoke("ping")  # warm-up: exclude cold model load from the latency figures
     route_hits = policy_hits = policy_total = plan_valid = cite_hits = cite_total = 0
     refusal_hits = refusal_total = 0
     latencies: list[float] = []
@@ -126,6 +133,8 @@ async def evaluate_model(model: str, cases: list[dict[str, Any]], judge: bool) -
         start = time.perf_counter()
         route = router({"request": case["input"]}).get("route")
         route_hits += route == case["expect_route"]
+        if route != case["expect_route"]:
+            miss(case, "routing", f"got {route!r}, expected {case['expect_route']!r}")
         if "expect_policy" in case:
             policy_total += 1
             out = planner({"request": case["input"]})
@@ -133,6 +142,15 @@ async def evaluate_model(model: str, cases: list[dict[str, Any]], judge: bool) -
                 plan_valid += 1
                 outcome = evaluate_plan(Plan.model_validate(out["plan"])).outcome
                 policy_hits += outcome == case["expect_policy"]
+                if outcome != case["expect_policy"]:
+                    miss(
+                        case,
+                        "policy",
+                        f"got {outcome}, expected {case['expect_policy']}; "
+                        f"plan={out['plan']['calls']}",
+                    )
+            else:
+                miss(case, "plan invalid", str(out.get("error")))
         elif graph is not None:
             state = await graph.ainvoke({"request": case["input"]})
             if case.get("expect_citation"):
@@ -140,11 +158,15 @@ async def evaluate_model(model: str, cases: list[dict[str, Any]], judge: bool) -
                 retrieved = {c["id"] for c in state.get("retrieved", [])}
                 cited = state.get("cited_ids", [])
                 cite_hits += bool(cited) and set(cited) <= retrieved
+                if not (bool(cited) and set(cited) <= retrieved):
+                    miss(case, "citation", f"final={state.get('final', '')[:90]!r}")
                 if judge and cited and get_settings().judge_model:
                     judge_scores.append(_judge(case["input"], state["answer"]))
             if case.get("expect_refusal"):
                 refusal_total += 1
                 refusal_hits += state.get("final", "").startswith(INSUFFICIENT)
+                if not state.get("final", "").startswith(INSUFFICIENT):
+                    miss(case, "refusal", f"final={state.get('final', '')[:90]!r}")
         latencies.append(time.perf_counter() - start)
 
     tps = f"{metrics.tokens / (metrics.nanos / 1e9):.1f}" if metrics.nanos else "n/a"

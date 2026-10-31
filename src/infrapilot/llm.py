@@ -19,9 +19,11 @@ def get_chat_model(
         temperature=temperature,
         # Qwen3 "thinking" tokens break schema-constrained output and waste latency.
         reasoning=False,
+        # Keep the model resident between graph steps (6 GB GPU: avoid reload churn).
+        keep_alive="30m",
     )
 
 
 def get_embeddings(settings: Settings | None = None) -> OllamaEmbeddings:
     s = settings or get_settings()
-    return OllamaEmbeddings(model=s.embed_model, base_url=s.ollama_base_url)
+    return OllamaEmbeddings(model=s.embed_model, base_url=s.ollama_base_url, keep_alive=1800)
