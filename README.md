@@ -72,9 +72,9 @@ Full list in [docs/DECISIONS.md](docs/DECISIONS.md).
 
 | | |
 |---|---|
-| Tested config | _TODO: fill after benchmarking (CPU / GPU / RAM, model, `NUM_CTX`)_ |
-| Minimum | _TODO_ |
-| Expected latency | _TODO: router / planner / answer, p50_ |
+| Tested config | i5-9400F (6 cores) / GTX 1660 SUPER 6 GB / 9.7 GB RAM (WSL2), `qwen3:4b`, `NUM_CTX=4096` |
+| Minimum | ~4 GB free VRAM or RAM for `qwen3:4b` (not benchmarked below the tested config) |
+| Expected latency | ~4 s end-to-end p50; p95 ~31 s, driven by questions with no evidence in the docs (the answer is regenerated once before refusing). Router ~1.4 s, planner ~1.0 s on a typical action |
 
 Models (Q4, `NUM_CTX=8192`, approximate): `qwen3:8b` ~6-8 GB (default), `llama3.1:8b` ~6-8 GB,
 `qwen3:4b` ~3-4 GB (smaller fallback), `qwen3:1.7b` ~2 GB (plumbing only).
@@ -86,13 +86,13 @@ format is documented in `evals/run_evals.py`. Output starts with an auto-detecte
 
 | model | routing acc | policy acc | plan-valid % | citation-valid % | refusal % | latency p50 | latency p95 | tokens/s |
 |---|---|---|---|---|---|---|---|---|
-| _TODO_ | | | | | | | | |
+| qwen3:4b | 100% | 100% | 100% | 100% | 100% | 4.0s | 31.1s | 52.0 |
 
 ## Observability
 
 Set `LANGFUSE_ENABLED=true`; traces appear at <http://127.0.0.1:3100>.
 
-_Screenshot placeholder: `docs/img/langfuse-trace.png` (TODO)._
+![Langfuse trace of an action request](docs/img/langfuse-trace.png)
 
 ## Known limitations
 

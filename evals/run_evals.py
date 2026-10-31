@@ -125,9 +125,12 @@ async def evaluate_model(model: str, cases: list[dict[str, Any]], judge: bool) -
     graph = build_graph(Deps(llm, retriever, NullInvoker()), None) if retriever else None  # type: ignore[arg-type]
 
     llm.invoke("ping")  # warm-up: exclude cold model load from the latency figures
+    if graph is not None:  # also warm the full RAG path (embedder + LLM co-resident on small GPUs)
+        await graph.ainvoke({"request": "warm-up question about the documentation"})
     route_hits = policy_hits = policy_total = plan_valid = cite_hits = cite_total = 0
     refusal_hits = refusal_total = 0
     latencies: list[float] = []
+    per_case: list[tuple[float, str]] = []
     judge_scores: list[int] = []
     for case in cases:
         start = time.perf_counter()
@@ -168,7 +171,10 @@ async def evaluate_model(model: str, cases: list[dict[str, Any]], judge: bool) -
                 if not state.get("final", "").startswith(INSUFFICIENT):
                     miss(case, "refusal", f"final={state.get('final', '')[:90]!r}")
         latencies.append(time.perf_counter() - start)
+        per_case.append((latencies[-1], case["id"]))
 
+    slow = ", ".join(f"{c} {t:.1f}s" for t, c in sorted(per_case, reverse=True)[:3])
+    print(f"[latency] slowest: {slow}", file=sys.stderr)
     tps = f"{metrics.tokens / (metrics.nanos / 1e9):.1f}" if metrics.nanos else "n/a"
     row = {
         "model": model,
