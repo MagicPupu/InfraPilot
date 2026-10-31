@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     llm_model: str = "qwen3:8b"
     embed_model: str = "nomic-embed-text"
     num_ctx: int = 8192
-    database_url: str = "postgresql://infrapilot:infrapilot@localhost:5432/infrapilot"
+    database_url: str = "postgresql://infrapilot:infrapilot@localhost:5433/infrapilot"
 
     # Self-hosted Langfuse tracing; off unless explicitly enabled.
     langfuse_enabled: bool = False

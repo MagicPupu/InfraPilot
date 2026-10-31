@@ -1,4 +1,4 @@
-.PHONY: install up down ingest ask test lint typecheck eval pull-models
+.PHONY: install up down ingest ask ui test lint typecheck eval pull-models
 
 LLM_MODEL ?= $(shell sed -n 's/^LLM_MODEL=//p' .env.example)
 EMBED_MODEL ?= $(shell sed -n 's/^EMBED_MODEL=//p' .env.example)
@@ -18,6 +18,9 @@ ingest:
 
 ask:
 	uv run infrapilot ask "$(Q)"
+
+ui:
+	uv run --extra ui streamlit run src/infrapilot/ui.py
 
 test:
 	uv run pytest -m "not ollama"

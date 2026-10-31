@@ -43,6 +43,7 @@ make up                  # pgvector database + self-hosted Langfuse
 make ingest              # embed docs/runbooks into pgvector
 make ask Q="What is the naming convention for containers?"
 make ask Q="Create an nginx container called ip-web with 256 MB and 0.5 CPU"
+make ui   # Streamlit front-end at http://127.0.0.1:8501 (use 127.0.0.1, not localhost, from a Windows browser)
 ```
 
 Action requests show a plan preview and wait for `y/N`. `make down` stops the stack.
@@ -89,7 +90,7 @@ format is documented in `evals/run_evals.py`. Output starts with an auto-detecte
 
 ## Observability
 
-Set `LANGFUSE_ENABLED=true`; traces appear at <http://localhost:3000>.
+Set `LANGFUSE_ENABLED=true`; traces appear at <http://127.0.0.1:3100>.
 
 _Screenshot placeholder: `docs/img/langfuse-trace.png` (TODO)._
 
