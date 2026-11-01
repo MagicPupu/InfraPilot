@@ -1,4 +1,4 @@
-.PHONY: install up down ingest ask ui test lint typecheck eval pull-models
+.PHONY: install up down ingest ask ui test lint typecheck eval eval-retrieval pull-models
 
 LLM_MODEL ?= $(shell sed -n 's/^LLM_MODEL=//p' .env.example)
 EMBED_MODEL ?= $(shell sed -n 's/^EMBED_MODEL=//p' .env.example)
@@ -38,3 +38,6 @@ pull-models:
 # Local-only (needs Ollama): never run in CI.
 eval:
 	uv run python evals/run_evals.py $(if $(MODELS),--models $(MODELS),)
+
+eval-retrieval:
+	uv run python evals/retrieval_eval.py

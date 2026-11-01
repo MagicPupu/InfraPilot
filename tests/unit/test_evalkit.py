@@ -112,3 +112,16 @@ def test_dataset_has_adversarial_block_and_heldout_split():
     heldout = [c for c in cases if c["split"] == "heldout"]
     assert 0.2 <= len(heldout) / len(cases) <= 0.35
     assert any(c["category"] == "adversarial" for c in heldout)
+
+
+def test_retrieval_labels_point_at_real_chunks():
+    from infrapilot.rag.ingest import load_chunks
+
+    corpus = {c.id for c in load_chunks(DATASET.parents[1] / "docs" / "runbooks")}
+    rows = [
+        json.loads(ln) for ln in (DATASET.parent / "retrieval.jsonl").read_text().splitlines() if ln
+    ]
+    assert len(rows) >= 25
+    assert len({r["id"] for r in rows}) == len(rows)
+    for r in rows:
+        assert r["expected_ids"] and set(r["expected_ids"]) <= corpus, r["id"]

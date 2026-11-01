@@ -1,0 +1,31 @@
+{"id": "ret-01", "query": "Which images may I use?", "expected_ids": ["945b84f3f0"], "kind": "paraphrase", "note": "Allowed images > Allowlist"}
+{"id": "ret-02", "query": "Can I pull someorg/tool from a public registry?", "expected_ids": ["8880d38595"], "kind": "paraphrase", "note": "Allowed images > Third-party images"}
+{"id": "ret-03", "query": "How do I get a new base image approved?", "expected_ids": ["75f65aebeb"], "kind": "paraphrase", "note": "Allowed images > Requesting a new image"}
+{"id": "ret-04", "query": "Does listing containers need sign-off from a person?", "expected_ids": ["00cdd047df"], "kind": "paraphrase", "note": "Approval process > What needs approval"}
+{"id": "ret-05", "query": "Is a human needed to change anything in the sandbox?", "expected_ids": ["00cdd047df"], "kind": "paraphrase", "note": "Approval process > What needs approval"}
+{"id": "ret-06", "query": "What warning is shown for risky operations?", "expected_ids": ["f1a03372ec"], "kind": "paraphrase", "note": "Approval process > Destructive operations"}
+{"id": "ret-07", "query": "What happens to an approval if the plan is edited afterwards?", "expected_ids": ["315c9d1b4b"], "kind": "paraphrase", "note": "Approval process > What is approved"}
+{"id": "ret-08", "query": "Can InfraPilot remove a container that lacks its label?", "expected_ids": ["6f41144bf6"], "kind": "paraphrase", "note": "Deletion safety > Managed containers only"}
+{"id": "ret-09", "query": "What should I check before removing a container?", "expected_ids": ["f0b2b4c8bc"], "kind": "paraphrase", "note": "Deletion safety > Before deleting"}
+{"id": "ret-10", "query": "Is deleted data recoverable?", "expected_ids": ["f0b2b4c8bc"], "kind": "paraphrase", "note": "Deletion safety > Before deleting"}
+{"id": "ret-11", "query": "How is a deletion confirmed afterwards?", "expected_ids": ["d2fe7fedd8"], "kind": "paraphrase", "note": "Deletion safety > After deleting"}
+{"id": "ret-12", "query": "Smallest and largest RAM per container", "expected_ids": ["0da8875519"], "kind": "keyword", "note": "Memory and CPU limits > Memory"}
+{"id": "ret-13", "query": "Must every container declare a memory cap?", "expected_ids": ["0da8875519"], "kind": "paraphrase", "note": "Memory and CPU limits > Memory"}
+{"id": "ret-14", "query": "How many cores can a workload get?", "expected_ids": ["41e276cfbe"], "kind": "paraphrase", "note": "Memory and CPU limits > CPU"}
+{"id": "ret-15", "query": "Can I split a big workload over many small containers to get around the quota?", "expected_ids": ["7bf6a62dc1"], "kind": "paraphrase", "note": "Memory and CPU limits > Requests above the limits"}
+{"id": "ret-16", "query": "What prefix must container names have?", "expected_ids": ["9e633f492e"], "kind": "keyword", "note": "Naming conventions > Container names"}
+{"id": "ret-17", "query": "Are uppercase letters allowed in names?", "expected_ids": ["9e633f492e"], "kind": "paraphrase", "note": "Naming conventions > Container names"}
+{"id": "ret-18", "query": "What are extra copies of a service called?", "expected_ids": ["844e8d6de0"], "kind": "paraphrase", "note": "Naming conventions > Replica names"}
+{"id": "ret-19", "query": "Why can I not address a container named postgres-prod?", "expected_ids": ["366a021bde"], "kind": "paraphrase", "note": "Naming conventions > Forbidden names"}
+{"id": "ret-20", "query": "Where are agent runs recorded?", "expected_ids": ["9b0ea5386d"], "kind": "paraphrase", "note": "Observability > Traces"}
+{"id": "ret-21", "query": "How long are traces kept and are they sensitive?", "expected_ids": ["597042dfd7"], "kind": "paraphrase", "note": "Observability > Retention"}
+{"id": "ret-22", "query": "How do I turn on tracing?", "expected_ids": ["f41712c6de"], "kind": "paraphrase", "note": "Observability > Enabling"}
+{"id": "ret-23", "query": "Do containers come back on their own after a crash?", "expected_ids": ["479ceb32e2"], "kind": "paraphrase", "note": "Restart policy > Default behavior"}
+{"id": "ret-24", "query": "How do I recover a container that failed?", "expected_ids": ["add9512c7c"], "kind": "paraphrase", "note": "Restart policy > Recovering a failed container"}
+{"id": "ret-25", "query": "When should I stop recreating a crashing container?", "expected_ids": ["f991be2ab8"], "kind": "paraphrase", "note": "Restart policy > Crash loops"}
+{"id": "ret-26", "query": "Can I run 8 instances of the same service?", "expected_ids": ["90d9af8aef"], "kind": "paraphrase", "note": "Scaling policy > Replica limits"}
+{"id": "ret-27", "query": "How are new replicas configured?", "expected_ids": ["67c447c05f"], "kind": "keyword", "note": "Scaling policy > Scaling up"}
+{"id": "ret-28", "query": "What does scaling to zero do?", "expected_ids": ["b3dcd796a4", "f1a03372ec"], "kind": "keyword", "note": "Scaling policy > Scaling to zero ; Approval process > Destructive operations"}
+{"id": "ret-29", "query": "Why was my request refused and what rules does the message list?", "expected_ids": ["ed1910bee0"], "kind": "paraphrase", "note": "Troubleshooting > A request was refused"}
+{"id": "ret-30", "query": "The assistant said evidence is insufficient, what now?", "expected_ids": ["6af998057c"], "kind": "paraphrase", "note": "Troubleshooting > The agent says there is insufficient evidence"}
+{"id": "ret-31", "query": "My plan did not run, why?", "expected_ids": ["101ecd42c2"], "kind": "paraphrase", "note": "Troubleshooting > A plan was not executed"}
