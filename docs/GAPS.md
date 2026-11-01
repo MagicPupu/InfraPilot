@@ -3,6 +3,9 @@
 Audit of the repository at commit `39a1180`, against the interview-readiness task list.
 Baseline: ruff clean, mypy clean, 45 tests pass (FakeLLM, no network).
 
+The resolution table at the end records the state after the fixes. The sections in between are the
+original audit and are left unchanged.
+
 Status values: done, partial, missing.
 
 ## 1. Eval dataset
@@ -90,3 +93,14 @@ and validated against the ingested corpus.
    fully in 6 GB of VRAM with a KV cache, so they will partly run on CPU and be slow.
 3. Running 50+ cases times three models, including 8B models with CPU offload, may exceed 30
    minutes. This needs the owner's approval before it starts.
+
+## Resolution (2026-11-01)
+
+| Item | Result | Evidence |
+|---|---|---|
+| 1. Dataset | done | 66 cases, 17 adversarial, 18 held-out (27%); `evals/README.md`; Wilson intervals in every table |
+| 2. Retrieval | done | RRF hybrid in `rag/retrieve.py`; 31 labelled queries; `evals/results/retrieval-2026-11-01.json`. Hybrid did not beat vector-only |
+| 3. Governance tests | done | `tests/integration/test_governance.py`, `test_postgres.py`, `test_docker_tools.py`; two mutations of the code were confirmed to fail the tests |
+| 4. Benchmark | partial | Harness resumable, JSON and Markdown outputs, Langfuse export verified. Only `qwen3:4b` was run; `qwen3:8b` and `llama3.1:8b` not run (owner decision: skip, too slow for the hardware) |
+| 5. Demo assets | partial | `scripts/demo.sh` run end to end from a clean clone; `docs/DEMO.md` written. GIF and Streamlit screenshot are manual |
+| 6. README and hygiene | done, except remote CI | README, EU notes, CHANGELOG, badges, `.env.example`, secret scan. The updated workflow (pgvector service) has not run on GitHub because nothing was pushed |

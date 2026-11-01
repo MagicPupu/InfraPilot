@@ -1,0 +1,8 @@
+chat=qwen3:4b embed=nomic-embed-text num_ctx=4096
+server env: ['OLLAMA_MAX_LOADED_MODELS=1']
+round 1: chat call  47.3s  resident after: qwen3:4b
+round 1: embed call  12.0s  resident after: nomic-embed-text:latest
+round 2: chat call  51.2s  resident after: qwen3:4b
+round 2: embed call  10.5s  resident after: nomic-embed-text:latest
+round 3: chat call  41.2s  resident after: qwen3:4b
+round 3: embed call  12.9s  resident after: nomic-embed-text:latest

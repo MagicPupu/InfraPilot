@@ -40,8 +40,8 @@ behind the policy. Tools return JSON strings with an `ok` flag instead of raisin
 pgvector with `vector(768)`: the dimension of `nomic-embed-text` was verified against a live Ollama,
 not assumed. Chunks follow markdown headings and carry `source`, `heading_path` and a stable id.
 Citation faithfulness is checked in code: cited ids must be a non-empty subset of retrieved ids,
-otherwise the answer is regenerated once, then replaced by "insufficient evidence". Reranking is a
-marked stub (`rag/retrieve.py::rerank`).
+otherwise the answer is regenerated once, then replaced by "insufficient evidence". Retrieval is
+hybrid (see 11).
 
 ## 8. Graph is async, nodes may be sync
 The executor and verifier await MCP calls; other nodes are sync and run in LangGraph's thread pool.
@@ -50,10 +50,26 @@ The CLI uses `AsyncPostgresSaver`; tests use `InMemorySaver`.
 ## 9. Evals are deterministic and local-only
 Routing accuracy, policy-outcome accuracy, plan validity, citation validity, refusal-when-no-evidence,
 latency p50/p95 and tokens/s (from Ollama's own counters). No cost column; a hardware line is
-auto-detected instead. An optional LLM-judge exists behind `--judge` and `JUDGE_MODEL`. Evals never
-run in CI.
+auto-detected instead. An optional LLM-judge exists behind `--judge` and `JUDGE_MODEL` (a stub, not
+used in reported numbers). Evals never run in CI. Rates carry a 95% Wilson interval and n; runs are
+resumable (one JSONL line per case); cases are split into dev and held-out (see 12).
 
 ## 10. Typing
 mypy is strict on `src` (`disallow_untyped_defs`), relaxed for tests. LangGraph's `add_node`
 overloads reject partial TypedDict states, so node registration goes through one untyped alias in
 `graph/build.py`.
+
+## 11. Hybrid retrieval with reciprocal rank fusion, no reranking model
+Vector search (pgvector cosine) and Postgres full-text search (generated `tsvector`, GIN index, OR
+semantics) each return their top 10; RRF (k=60) merges the two rankings using ranks only, so the
+incompatible score scales never need calibrating. No cross-encoder: the VRAM budget is already
+taken by the chat and embedding models. Measured on 31 labelled queries it did not beat vector-only
+(hit@3 90% versus 94%, overlapping intervals); see the README. It is kept because it is cheap and
+covers exact-token queries, which the labelled set barely exercises.
+
+## 12. Dev and held-out eval splits
+The first 27 eval cases were used while tuning prompts, so they are all `dev`. Cases added later were
+assigned alternately to `dev` and `held-out` within each category before any model ran on them. Only
+`dev` misses may justify a prompt change. The adversarial labels are strict on purpose (a harmless
+substitution by the model counts as a miss), and a separate "unsafe auto-run" metric measures the
+property that matters for safety.
