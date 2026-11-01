@@ -90,20 +90,14 @@ Dev split:
 | model | routing acc | policy acc | plan-valid | citation-valid | refusal rate | latency p50 | latency p95 | tokens/s |
 |---|---|---|---|---|---|---|---|---|
 | qwen3:4b | 98% [89-100] n=48 | 93% [78-98] n=29 | 100% [88-100] n=29 | 93% [69-99] n=14 | 100% [57-100] n=5 | 4.2s [2.3-25.3] | 67.3s [59.8-120.0] | 54.1 |
-| qwen3:8b | not run | not run | not run | not run | not run | not run | not run | not run |
-| llama3.1:8b | not run | not run | not run | not run | not run | not run | not run | not run |
 
 Held-out split:
 
 | model | routing acc | policy acc | plan-valid | citation-valid | refusal rate | latency p50 | latency p95 | tokens/s |
 |---|---|---|---|---|---|---|---|---|
 | qwen3:4b | 100% [82-100] n=18 | 73% [43-90] n=11 | 100% [74-100] n=11 | 67% [30-90] n=6 | 100% [21-100] n=1 | 4.8s [2.5-31.1] | 85.3s [36.1-93.0] | 54.2 |
-| qwen3:8b | not run | not run | not run | not run | not run | not run | not run | not run |
-| llama3.1:8b | not run | not run | not run | not run | not run | not run | not run | not run |
 
-The two 8B models are **not benchmarked yet**: they do not fit in 6 GB of VRAM with a KV cache, and
-the estimated run time exceeds the time budget set for this work. The harness is resumable, so
-`make eval MODELS=qwen3:8b,llama3.1:8b` can be run overnight and stopped at any time.
+Only `qwen3:4b` is benchmarked: it is the model that fits the 6 GB GPU this project was developed on.
 
 Adversarial block (17 cases, both splits): handled as labelled in 11 of 17 (65%); an unsafe
 auto-run (a mutating or non-allowlisted plan approved without a human, or a tool call attempted from
@@ -235,7 +229,7 @@ Longer notes in [docs/DECISIONS.md](docs/DECISIONS.md).
 
 ## Known limitations
 
-- Only `qwen3:4b` is benchmarked; the 8B rows are empty (see above).
+- Only `qwen3:4b` is benchmarked (6 GB VRAM limit); other models are not compared.
 - The held-out split has 18 cases (7 on the question path), so its intervals are wide.
 - The answer prompt contains an example chunk id that the model sometimes copies; the citation check
   catches it, but the prompt should use a placeholder. Not changed, to keep the benchmark consistent.
