@@ -1,0 +1,309 @@
+{
+  "date": "2026-11-01",
+  "embed_model": "nomic-embed-text",
+  "queries": 31,
+  "depth": 10,
+  "summary": {
+    "vector": {
+      "hit@3_k": 29,
+      "n": 31,
+      "mrr": 0.8978494623655914
+    },
+    "fulltext": {
+      "hit@3_k": 26,
+      "n": 31,
+      "mrr": 0.7240143369175627
+    },
+    "hybrid": {
+      "hit@3_k": 28,
+      "n": 31,
+      "mrr": 0.8467741935483871
+    }
+  },
+  "by_kind": {
+    "keyword": {
+      "vector": {
+        "hit@3_k": 4,
+        "n": 4,
+        "mrr": 0.8333333333333334
+      },
+      "fulltext": {
+        "hit@3_k": 4,
+        "n": 4,
+        "mrr": 0.75
+      },
+      "hybrid": {
+        "hit@3_k": 4,
+        "n": 4,
+        "mrr": 0.875
+      }
+    },
+    "paraphrase": {
+      "vector": {
+        "hit@3_k": 25,
+        "n": 27,
+        "mrr": 0.9074074074074074
+      },
+      "fulltext": {
+        "hit@3_k": 22,
+        "n": 27,
+        "mrr": 0.7201646090534979
+      },
+      "hybrid": {
+        "hit@3_k": 24,
+        "n": 27,
+        "mrr": 0.8425925925925926
+      }
+    }
+  },
+  "rows": [
+    {
+      "id": "ret-01",
+      "query": "Which images may I use?",
+      "kind": "paraphrase",
+      "vector": 1,
+      "fulltext": 1,
+      "hybrid": 1
+    },
+    {
+      "id": "ret-02",
+      "query": "Can I pull someorg/tool from a public registry?",
+      "kind": "paraphrase",
+      "vector": 1,
+      "fulltext": 1,
+      "hybrid": 1
+    },
+    {
+      "id": "ret-03",
+      "query": "How do I get a new base image approved?",
+      "kind": "paraphrase",
+      "vector": 1,
+      "fulltext": 2,
+      "hybrid": 1
+    },
+    {
+      "id": "ret-04",
+      "query": "Does listing containers need sign-off from a person?",
+      "kind": "paraphrase",
+      "vector": 1,
+      "fulltext": 1,
+      "hybrid": 1
+    },
+    {
+      "id": "ret-05",
+      "query": "Is a human needed to change anything in the sandbox?",
+      "kind": "paraphrase",
+      "vector": 1,
+      "fulltext": 1,
+      "hybrid": 1
+    },
+    {
+      "id": "ret-06",
+      "query": "What warning is shown for risky operations?",
+      "kind": "paraphrase",
+      "vector": 1,
+      "fulltext": 1,
+      "hybrid": 1
+    },
+    {
+      "id": "ret-07",
+      "query": "What happens to an approval if the plan is edited afterwards?",
+      "kind": "paraphrase",
+      "vector": 1,
+      "fulltext": 1,
+      "hybrid": 1
+    },
+    {
+      "id": "ret-08",
+      "query": "Can InfraPilot remove a container that lacks its label?",
+      "kind": "paraphrase",
+      "vector": 1,
+      "fulltext": 1,
+      "hybrid": 1
+    },
+    {
+      "id": "ret-09",
+      "query": "What should I check before removing a container?",
+      "kind": "paraphrase",
+      "vector": 2,
+      "fulltext": 9,
+      "hybrid": 4
+    },
+    {
+      "id": "ret-10",
+      "query": "Is deleted data recoverable?",
+      "kind": "paraphrase",
+      "vector": 1,
+      "fulltext": 1,
+      "hybrid": 1
+    },
+    {
+      "id": "ret-11",
+      "query": "How is a deletion confirmed afterwards?",
+      "kind": "paraphrase",
+      "vector": 2,
+      "fulltext": 2,
+      "hybrid": 2
+    },
+    {
+      "id": "ret-12",
+      "query": "Smallest and largest RAM per container",
+      "kind": "keyword",
+      "vector": 1,
+      "fulltext": 2,
+      "hybrid": 1
+    },
+    {
+      "id": "ret-13",
+      "query": "Must every container declare a memory cap?",
+      "kind": "paraphrase",
+      "vector": 1,
+      "fulltext": 1,
+      "hybrid": 1
+    },
+    {
+      "id": "ret-14",
+      "query": "How many cores can a workload get?",
+      "kind": "paraphrase",
+      "vector": 1,
+      "fulltext": 1,
+      "hybrid": 1
+    },
+    {
+      "id": "ret-15",
+      "query": "Can I split a big workload over many small containers to get around the quota?",
+      "kind": "paraphrase",
+      "vector": 1,
+      "fulltext": 1,
+      "hybrid": 1
+    },
+    {
+      "id": "ret-16",
+      "query": "What prefix must container names have?",
+      "kind": "keyword",
+      "vector": 1,
+      "fulltext": 1,
+      "hybrid": 1
+    },
+    {
+      "id": "ret-17",
+      "query": "Are uppercase letters allowed in names?",
+      "kind": "paraphrase",
+      "vector": 1,
+      "fulltext": 3,
+      "hybrid": 2
+    },
+    {
+      "id": "ret-18",
+      "query": "What are extra copies of a service called?",
+      "kind": "paraphrase",
+      "vector": 1,
+      "fulltext": 1,
+      "hybrid": 1
+    },
+    {
+      "id": "ret-19",
+      "query": "Why can I not address a container named postgres-prod?",
+      "kind": "paraphrase",
+      "vector": 1,
+      "fulltext": 1,
+      "hybrid": 1
+    },
+    {
+      "id": "ret-20",
+      "query": "Where are agent runs recorded?",
+      "kind": "paraphrase",
+      "vector": 1,
+      "fulltext": 2,
+      "hybrid": 2
+    },
+    {
+      "id": "ret-21",
+      "query": "How long are traces kept and are they sensitive?",
+      "kind": "paraphrase",
+      "vector": 1,
+      "fulltext": 2,
+      "hybrid": 1
+    },
+    {
+      "id": "ret-22",
+      "query": "How do I turn on tracing?",
+      "kind": "paraphrase",
+      "vector": 4,
+      "fulltext": null,
+      "hybrid": 4
+    },
+    {
+      "id": "ret-23",
+      "query": "Do containers come back on their own after a crash?",
+      "kind": "paraphrase",
+      "vector": 4,
+      "fulltext": 4,
+      "hybrid": 4
+    },
+    {
+      "id": "ret-24",
+      "query": "How do I recover a container that failed?",
+      "kind": "paraphrase",
+      "vector": 1,
+      "fulltext": 1,
+      "hybrid": 1
+    },
+    {
+      "id": "ret-25",
+      "query": "When should I stop recreating a crashing container?",
+      "kind": "paraphrase",
+      "vector": 1,
+      "fulltext": 4,
+      "hybrid": 1
+    },
+    {
+      "id": "ret-26",
+      "query": "Can I run 8 instances of the same service?",
+      "kind": "paraphrase",
+      "vector": 1,
+      "fulltext": 6,
+      "hybrid": 2
+    },
+    {
+      "id": "ret-27",
+      "query": "How are new replicas configured?",
+      "kind": "keyword",
+      "vector": 3,
+      "fulltext": 2,
+      "hybrid": 2
+    },
+    {
+      "id": "ret-28",
+      "query": "What does scaling to zero do?",
+      "kind": "keyword",
+      "vector": 1,
+      "fulltext": 1,
+      "hybrid": 1
+    },
+    {
+      "id": "ret-29",
+      "query": "Why was my request refused and what rules does the message list?",
+      "kind": "paraphrase",
+      "vector": 1,
+      "fulltext": 1,
+      "hybrid": 1
+    },
+    {
+      "id": "ret-30",
+      "query": "The assistant said evidence is insufficient, what now?",
+      "kind": "paraphrase",
+      "vector": 1,
+      "fulltext": 1,
+      "hybrid": 1
+    },
+    {
+      "id": "ret-31",
+      "query": "My plan did not run, why?",
+      "kind": "paraphrase",
+      "vector": 1,
+      "fulltext": 3,
+      "hybrid": 1
+    }
+  ]
+}
