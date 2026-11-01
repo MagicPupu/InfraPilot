@@ -10,6 +10,7 @@ from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
 from langgraph.types import Command
 from rich.console import Console
 from rich.panel import Panel
+from rich.text import Text
 
 from infrapilot.config import get_settings
 from infrapilot.graph.build import Deps, build_graph
@@ -42,11 +43,14 @@ async def _ask(request: str, auto_approve: bool) -> None:
             while "__interrupt__" in result:
                 payload = result["__interrupt__"][0].value
                 console.print(
-                    Panel(payload["preview"], title="Approval required", border_style="yellow")
+                    Panel(
+                        Text(payload["preview"]), title="Approval required", border_style="yellow"
+                    )
                 )
                 approved = auto_approve or typer.confirm("Approve this plan?", default=False)
                 result = await graph.ainvoke(Command(resume={"approved": approved}), config)
-            console.print(Panel(result.get("final", "(no answer)"), title="InfraPilot"))
+            # Text(): model and policy output may contain [brackets] that Rich would read as markup.
+            console.print(Panel(Text(result.get("final", "(no answer)")), title="InfraPilot"))
 
 
 @app.command()

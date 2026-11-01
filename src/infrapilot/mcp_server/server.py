@@ -9,7 +9,7 @@ from mcp.server.fastmcp import FastMCP
 
 from infrapilot.mcp_server.docker_tools import DockerTools
 
-mcp = FastMCP("infrapilot-sandbox")
+mcp = FastMCP("infrapilot-sandbox", log_level="WARNING")  # no per-request INFO noise
 _tools = DockerTools()
 
 
