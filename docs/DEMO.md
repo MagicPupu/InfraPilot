@@ -36,6 +36,8 @@ Save the files with exactly these names in `docs/assets/`. The README expects th
 | `docs/assets/langfuse-trace.png` | Langfuse trace of step 3 (router, planner, approval, executor spans) | Open the trace in the Langfuse UI. Check that no email or key is visible before committing |
 | `docs/assets/streamlit-ui.png` | Streamlit UI showing the approval panel for a create request | `make ui`, open `http://127.0.0.1:8501`, submit step 3's request, capture before approving |
 
+`demo.gif` and its source `demo.cast` were recorded from a real run of `scripts/demo.sh` with `asciinema rec --cols 100 --rows 40` and `agg --idle-time-limit 2 --speed 1.5`. Re-record the same way if the script changes.
+
 `langfuse-trace.png` already exists from an earlier capture. Replace it only if you want the trace to
 match the current version.
 
