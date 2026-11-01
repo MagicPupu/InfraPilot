@@ -396,6 +396,8 @@ def export_langfuse(model: str, records: list[dict[str, Any]], date: str) -> Non
                         name=f"{name} ({sp})",
                         value=m["k"] / m["n"],
                         session_id=session,
+                        # deterministic id: exporting the same run again overwrites
+                        score_id=f"{session}-{sp}-{re.sub(r'[^a-z]+', '-', name)}",
                         comment=f"{m['k']}/{m['n']}, 95% Wilson [{m['lo']:.2f}, {m['hi']:.2f}]",
                     )
         client.flush()
