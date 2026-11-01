@@ -56,7 +56,10 @@ ignore_missing_imports = true
 [tool.pytest.ini_options]
 pythonpath = ["src", "evals"]
 testpaths = ["tests"]
-markers = ["ollama: needs a reachable local Ollama (never run in CI)"]
+markers = [
+    "ollama: needs a reachable local Ollama (never run in CI)",
+    "postgres: needs the pgvector database (skipped when unreachable; CI provides a service)",
+]
 
 [tool.ruff]
 line-length = 100

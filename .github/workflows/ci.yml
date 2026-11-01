@@ -7,6 +7,19 @@ on:
 jobs:
   checks:
     runs-on: ubuntu-latest
+    # Database only (pgvector): exercises the checkpointer and retrieval SQL. No Ollama.
+    services:
+      db:
+        image: pgvector/pgvector:pg17
+        env:
+          POSTGRES_USER: infrapilot
+          POSTGRES_PASSWORD: infrapilot
+          POSTGRES_DB: infrapilot
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd "pg_isready -U infrapilot" --health-interval 3s
+          --health-timeout 3s --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
