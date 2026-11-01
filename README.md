@@ -14,9 +14,7 @@ observability. Measured results, including the failures, are in [Evals](#evals) 
 
 ![Terminal demo of scripts/demo.sh](docs/assets/demo.gif)
 
-<!-- Uncomment once the file exists (see docs/DEMO.md):
-![Streamlit UI with the approval panel](docs/assets/streamlit-ui.png)
--->
+![Streamlit UI paused at the approval step](docs/assets/streamlit-ui.png)
 
 ## Architecture
 
@@ -251,7 +249,7 @@ Longer notes in [docs/DECISIONS.md](docs/DECISIONS.md).
 - `scale_service` relies on container labels, not Swarm or Kubernetes.
 - Single-user CLI: no authentication, no multi-tenant isolation, checkpoints and traces are not
   tamper-evident, and neither the CLI nor the UI tells the user they are talking to an AI system.
-- The demo GIF is a real recording (idle time capped at 2 s, speed 1.5x) and shows a model slip in step 1 ("InfraP:"). The Streamlit screenshot is not captured yet; its link is commented out.
+- The demo GIF is a real recording (idle time capped at 2 s, speed 1.5x) and shows a model slip in step 1 ("InfraP:").
 
 ## Development
 
