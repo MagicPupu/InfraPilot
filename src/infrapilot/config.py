@@ -8,17 +8,17 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    ollama_base_url: str = "http://localhost:11434"
-    llm_model: str = "qwen3:8b"
+    ollama_base_url: str = "http://127.0.0.1:11434"
+    llm_model: str = "qwen3:4b"
     embed_model: str = "nomic-embed-text"
-    num_ctx: int = 8192
-    database_url: str = "postgresql://infrapilot:infrapilot@localhost:5433/infrapilot"
+    num_ctx: int = 4096
+    database_url: str = "postgresql://infrapilot:infrapilot@127.0.0.1:5433/infrapilot"
 
     # Self-hosted Langfuse tracing; off unless explicitly enabled.
     langfuse_enabled: bool = False
     langfuse_public_key: str = ""
     langfuse_secret_key: str = ""
-    langfuse_host: str = "http://localhost:3000"
+    langfuse_host: str = "http://127.0.0.1:3100"
 
     # Optional LLM-judge for eval answer quality; unset means the judge is disabled.
     judge_model: str | None = None

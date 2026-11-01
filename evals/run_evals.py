@@ -31,6 +31,7 @@ from evalkit import (
     acceptable,
     append_record,
     done_ids,
+    latency_rows,
     load_records,
     split_records,
     summarize,
@@ -325,12 +326,15 @@ def write_outputs(
 ) -> None:
     s = get_settings()
     stem = result_stem(model, date)
+    previous = results_dir / f"{stem}.json"
+    old = json.loads(previous.read_text()) if previous.exists() else {}
     doc = {
         "model": model,
         "date": date,
-        "commit": git_commit(),
+        # a regenerated summary keeps the commit and hardware of the original run
+        "commit": old.get("commit") or git_commit(),
         "dataset_sha256_12": dataset_digest(),
-        "hardware": hardware_line(s.num_ctx),
+        "hardware": old.get("hardware") or hardware_line(s.num_ctx),
         "num_ctx": s.num_ctx,
         "temperature": 0.0,
         "complete": len(records) == expected,
@@ -346,12 +350,15 @@ def write_outputs(
         f"{len(records)}/{expected} cases recorded."
     )
     for sp in ("dev", "heldout"):
-        md += ["", f"## {sp}", "", to_markdown([table_row(model, split_records(records, sp))])]
+        part = split_records(records, sp)
+        md += ["", f"## {sp}", "", to_markdown([table_row(model, part)])]
+        md += ["", "Latency by path:", "", to_markdown(latency_rows(model, part))]
     (results_dir / f"{stem}.md").write_text("\n".join(md) + "\n")
 
 
 def write_summary(date: str, results_dir: Path) -> str:
     docs = [json.loads(p.read_text()) for p in sorted(results_dir.glob(f"*-{date}.json"))]
+    docs = [d for d in docs if "cases" in d]  # skip retrieval-<date>.json
     if not docs:
         return ""
     lines: list[str] = [f"# Eval summary {date}", "", docs[0]["hardware"], ""]
@@ -359,6 +366,8 @@ def write_summary(date: str, results_dir: Path) -> str:
     for sp in ("dev", "heldout"):
         rows = [table_row(d["model"], split_records(d["cases"], sp)) for d in docs]
         lines += ["", f"## {sp} split", "", to_markdown(rows)]
+        lat = [r for d in docs for r in latency_rows(d["model"], split_records(d["cases"], sp))]
+        lines += ["", "Latency by path:", "", to_markdown(lat)]
     text = "\n".join(lines) + "\n"
     (results_dir / f"summary-{date}.md").write_text(text)
     return text

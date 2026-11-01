@@ -120,6 +120,27 @@ def summarize(records: list[dict[str, Any]]) -> dict[str, Any]:
     return out
 
 
+def path_of(record: dict[str, Any]) -> str:
+    """Action cases call router and planner directly; question cases run the RAG graph."""
+    return "action" if "plan_valid" in record else "question"
+
+
+def latency_rows(model: str, records: list[dict[str, Any]]) -> list[dict[str, str]]:
+    rows = []
+    for path in ("action", "question"):
+        lat = [r["latency_s"] for r in records if path_of(r) == path and "latency_s" in r]
+        rows.append(
+            {
+                "model": model,
+                "path": path,
+                "n": str(len(lat)),
+                "p50": fmt_latency(lat, 50),
+                "p95": fmt_latency(lat, 95),
+            }
+        )
+    return rows
+
+
 def split_records(records: list[dict[str, Any]], split: str) -> list[dict[str, Any]]:
     return records if split == "all" else [r for r in records if r.get("split") == split]
 

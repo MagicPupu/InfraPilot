@@ -125,3 +125,15 @@ def test_retrieval_labels_point_at_real_chunks():
     assert len({r["id"] for r in rows}) == len(rows)
     for r in rows:
         assert r["expected_ids"] and set(r["expected_ids"]) <= corpus, r["id"]
+
+
+def test_latency_is_split_by_path():
+    from evalkit import latency_rows
+
+    records = [
+        {"plan_valid": True, "latency_s": 2.0},
+        {"plan_valid": True, "latency_s": 4.0},
+        {"final": "x", "latency_s": 60.0},
+    ]
+    rows = {r["path"]: r for r in latency_rows("m", records)}
+    assert rows["action"]["n"] == "2" and rows["question"]["n"] == "1"
