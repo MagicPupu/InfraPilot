@@ -84,7 +84,7 @@ Hardware: Intel i5-9400F (6 threads), GeForce GTX 1660 SUPER 6144 MiB, 9.7 GB RA
 ### Model benchmark (66 cases: 48 dev, 18 held-out)
 
 Held-out cases were not used when changing prompts. The run is `evals/results/qwen3-4b-2026-11-01.json`
-(commit `03b5c7e`, dataset hash `dcc6e3b75847`).
+(commit `b2828b6`, dataset hash `dcc6e3b75847`).
 
 Dev split:
 
