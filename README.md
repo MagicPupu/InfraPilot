@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/MagicPupu/InfraPilot/actions/workflows/ci.yml/badge.svg)](https://github.com/MagicPupu/InfraPilot/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![M8ven Score](https://m8ven.ai/badge/mcp/magicpupu-infrapilot-zw7vz5?v=812f8ed4a3dd79fde39b44bf35d1a6f0)](https://m8ven.ai/mcp/magicpupu-infrapilot-zw7vz5?s=readme)
 
 A fully local LangGraph agent that turns natural-language infrastructure requests into
 policy-checked, human-approved changes on a Docker sandbox. No API key, no cloud LLM: it runs on a
